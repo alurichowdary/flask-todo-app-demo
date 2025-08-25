@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <form method="POST" class="d-flex mb-3">
+    <input type="text" name="task" class="form-control me-2" placeholder="Enter a task">
+    <button class="btn btn-primary">Add</button>
+  </form>
+
+  <ul class="list-group">
+    {% for task in tasks %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>
+          {% if task.completed %}
+            <s class="text-muted">{{ task.title }}</s>
+          {% else %}
+            {{ task.title }}
+          {% endif %}
+        </span>
+        <span>
+          {% if not task.completed %}
+            <a href="{{ url_for('complete', id=task.id) }}" class="btn btn-sm btn-success">Complete</a>
+          {% endif %}
+          <a href="{{ url_for('delete', id=task.id) }}" class="btn btn-sm btn-danger">Delete</a>
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
