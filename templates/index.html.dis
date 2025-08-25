@@ -1,0 +1,61 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+<head>
+  <title>Flask To-Do</title>
+</head>
+<body>
+  <h1>My To-Do List</h1>
+  <form method="POST">
+    <input type="text" name="task" placeholder="Enter a task">
+    <button type="submit">Add</button>
+  </form>
+
+  <ul>
+    {% for task in tasks %}
+      <li>{{ task.title }}</li>
+    {% endfor %}
+  </ul>
+  <ul>
+  {% for task in tasks %}
+    <li>
+      {% if task.completed %}
+        <s>{{ task.title }}</s>
+      {% else %}
+        {{ task.title }}
+        <a href="{{ url_for('complete', index=loop.index0) }}">[Complete]</a>
+      {% endif %}
+      <a href="{{ url_for('delete', index=loop.index0) }}">[Delete]</a>
+    </li>
+  {% endfor %}
+</ul>
+{% extends 'base.html' %}
+{% block content %}
+  <form method="POST" class="d-flex mb-3">
+    <input type="text" name="task" class="form-control me-2" placeholder="Enter a task">
+    <button class="btn btn-primary">Add</button>
+  </form>
+
+  <ul class="list-group">
+    {% for task in tasks %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>
+          {% if task.completed %}
+            <s class="text-muted">{{ task.title }}</s>
+          {% else %}
+            {{ task.title }}
+          {% endif %}
+        </span>
+        <span>
+          {% if not task.completed %}
+            <a href="{{ url_for('complete', id=task.id) }}" class="btn btn-sm btn-success">Complete</a>
+          {% endif %}
+          <a href="{{ url_for('delete', id=task.id) }}" class="btn btn-sm btn-danger">Delete</a>
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+</body>
+</html>
